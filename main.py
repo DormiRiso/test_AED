@@ -12,7 +12,7 @@ def process_audio(file_path: str):
 
     y, sr = load_audio(file_path)
     config = EventDetectionConfig(
-        threshold_coefficient=0.7,
+        threshold_coefficient=0.9,
         time_window=1.5,
         min_duration=1.5,
         save_path=os.path.join(output_folder, "events_plot.png"),
@@ -20,13 +20,14 @@ def process_audio(file_path: str):
         hop_length=512,
         n_fft=2048,
         sr=sr,
-        min_max_freq=(250, 1100)
+        min_max_freq=(300, 1000)
     )
     y_filtered = apply_filters(y, sr, highpass_cutoff=config.min_max_freq[0], lowpass_cutoff=config.min_max_freq[1])
     rms = compute_rms(y_filtered, frame_size=2048, hop_length=512, save_path=None)
 
     events = detect_events(rms, y_filtered, config)
-    audio_clips = segment_audio(y_filtered, sr, events, save_folder=os.path.join(output_folder, "segments"))
+    audio_clips = segment_audio(y_filtered, sr, events, save_folder=os.path.join(output_folder, "segments"), 
+                                normalize_gain=True, target_level=-9.0)
 
 
 data_folder = "data/"
