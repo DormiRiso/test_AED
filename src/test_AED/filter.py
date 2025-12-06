@@ -1,10 +1,5 @@
-from scipy.signal import butter, filtfilt, find_peaks
-import soundfile as sf
-import librosa
-import librosa.display
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.io import wavfile
+'''Module for applying high-pass and low-pass filters to audio data.'''
+from scipy.signal import butter, filtfilt
 
 
 def highpass_filter(data, sr, cutoff=250):
@@ -16,6 +11,7 @@ def highpass_filter(data, sr, cutoff=250):
     Returns:
         np.ndarray: The filtered audio data.
     '''
+
     b, a = butter(8, cutoff / (sr / 2), btype='high')
     return filtfilt(b, a, data)
 
@@ -29,11 +25,12 @@ def lowpass_filter(data, sr, cutoff=1000):
     Returns:
         np.ndarray: The filtered audio data.
     '''
+
     b, a = butter(8, cutoff / (sr / 2), btype='low')
     return filtfilt(b, a, data)
 
 
-def apply_filters(data, sr, highpass_cutoff=250, lowpass_cutoff=1100, save_path: str = None):
+def apply_filters(data, sr, highpass_cutoff=250, lowpass_cutoff=1100):
     '''Function to apply both high-pass and low-pass filters to the audio data.
     Args:
         data (np.ndarray): The audio data to be filtered.
@@ -47,8 +44,5 @@ def apply_filters(data, sr, highpass_cutoff=250, lowpass_cutoff=1100, save_path:
 
     filtered_data = highpass_filter(data, sr, cutoff=highpass_cutoff)
     filtered_data = lowpass_filter(filtered_data, sr, cutoff=lowpass_cutoff)
-
-    if save_path:
-        sf.write(save_path, filtered_data, sr)
 
     return filtered_data

@@ -1,5 +1,6 @@
 # Project related
 data/
+output/
 sequences/
 test_data/
 labeled/

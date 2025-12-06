@@ -1,10 +1,8 @@
-from scipy.signal import butter, filtfilt, find_peaks
-import soundfile as sf
+'''Module to compute and visualize the Root Mean Square (RMS) energy of an audio signal.'''
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.io import wavfile
 
 
 def compute_rms(audio_data, frame_size=2048, hop_length=512, save_path: str = None):
